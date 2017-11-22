@@ -48,32 +48,36 @@ extern int yydebug;
     THREAD = 258,
     PROCESSO = 259,
     STRING = 260,
-    VAR = 261,
-    IGUAL = 262,
-    EOL = 263,
-    ASPA = 264,
-    VEZES = 265,
-    DIVIDIDO = 266,
-    ABRE = 267,
-    FECHA = 268,
-    FLOAT = 269,
-    SOMA = 270
+    LINHA = 261,
+    COLUNA = 262,
+    VAR = 263,
+    IGUAL = 264,
+    EOL = 265,
+    ASPA = 266,
+    VEZES = 267,
+    DIVIDIDO = 268,
+    ABRE = 269,
+    FECHA = 270,
+    FLOAT = 271,
+    SOMA = 272
   };
 #endif
 /* Tokens.  */
 #define THREAD 258
 #define PROCESSO 259
 #define STRING 260
-#define VAR 261
-#define IGUAL 262
-#define EOL 263
-#define ASPA 264
-#define VEZES 265
-#define DIVIDIDO 266
-#define ABRE 267
-#define FECHA 268
-#define FLOAT 269
-#define SOMA 270
+#define LINHA 261
+#define COLUNA 262
+#define VAR 263
+#define IGUAL 264
+#define EOL 265
+#define ASPA 266
+#define VEZES 267
+#define DIVIDIDO 268
+#define ABRE 269
+#define FECHA 270
+#define FLOAT 271
+#define SOMA 272
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -86,7 +90,7 @@ union YYSTYPE
   int     ival;
   float   fval;
 
-#line 90 "y.tab.h" /* yacc.c:1909  */
+#line 94 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

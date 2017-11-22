@@ -15,6 +15,8 @@ int yylex(void);
 %token <strval> THREAD
 %token <strval> PROCESSO
 %token <strval> STRING
+%token <strval> LINHA
+%token <strval> COLUNA
 %token <ival> VAR IGUAL EOL ASPA VEZES DIVIDIDO ABRE FECHA
 %token <fval> FLOAT
 %left SOMA
@@ -35,10 +37,10 @@ EXPRESSAO:
                           }
     ;
 
-    | STRING IGUAL STRING VEZES FLOAT {
+    | STRING IGUAL STRING VEZES FLOAT LINHA {
         printf("Aplicando brilho *%g\n", $5);
         imagem I = abrir_imagem($3);
-        aplicar_brilho(&I,$5);
+        aplicar_brilho_lin(&I,$5);
         salvar_imagem($1,&I);
                                        }
     ;
@@ -58,11 +60,21 @@ EXPRESSAO:
         salvar_imagem($1,&I);
                                        }
     ;
+    
 
+    | STRING IGUAL STRING VEZES FLOAT COLUNA {
+        printf("Aplicando brilho *%g\n", $5);
+        imagem I = abrir_imagem($3);
+        aplicar_brilho_col(&I,$5);
+        salvar_imagem($1,&I);
+                                       }
+    
+    ;
+    
     | STRING IGUAL STRING DIVIDIDO FLOAT {
         printf("Aplicando brilho /%g\n", $5);
         imagem I = abrir_imagem($3);
-        aplicar_brilho(&I,1/$5);
+        aplicar_brilho_lin(&I,1/$5);
         salvar_imagem($1,&I);
                                        }
     ;

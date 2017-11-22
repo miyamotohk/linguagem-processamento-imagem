@@ -22,6 +22,14 @@ void yyerror(char *);
     return ASPA;
    }
 
+(LIN|lin) {
+    return LINHA;
+    }
+    
+(COL|col) {
+    return COLUNA;
+    }
+   
 (THR|thr) {
     return THREAD;
     }
