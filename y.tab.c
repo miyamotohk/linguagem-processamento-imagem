@@ -107,39 +107,43 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    THREAD = 258,
-    PROCESSO = 259,
-    STRING = 260,
-    LINHA = 261,
-    COLUNA = 262,
-    VAR = 263,
-    IGUAL = 264,
-    EOL = 265,
-    ASPA = 266,
-    VEZES = 267,
-    DIVIDIDO = 268,
-    ABRE = 269,
-    FECHA = 270,
-    FLOAT = 271,
-    SOMA = 272
+    COLUNAS = 258,
+    LINHAS = 259,
+    THREAD = 260,
+    PROCESSO = 261,
+    STRING = 262,
+    LINHA = 263,
+    COLUNA = 264,
+    VAR = 265,
+    IGUAL = 266,
+    EOL = 267,
+    ASPA = 268,
+    VEZES = 269,
+    DIVIDIDO = 270,
+    ABRE = 271,
+    FECHA = 272,
+    FLOAT = 273,
+    SOMA = 274
   };
 #endif
 /* Tokens.  */
-#define THREAD 258
-#define PROCESSO 259
-#define STRING 260
-#define LINHA 261
-#define COLUNA 262
-#define VAR 263
-#define IGUAL 264
-#define EOL 265
-#define ASPA 266
-#define VEZES 267
-#define DIVIDIDO 268
-#define ABRE 269
-#define FECHA 270
-#define FLOAT 271
-#define SOMA 272
+#define COLUNAS 258
+#define LINHAS 259
+#define THREAD 260
+#define PROCESSO 261
+#define STRING 262
+#define LINHA 263
+#define COLUNA 264
+#define VAR 265
+#define IGUAL 266
+#define EOL 267
+#define ASPA 268
+#define VEZES 269
+#define DIVIDIDO 270
+#define ABRE 271
+#define FECHA 272
+#define FLOAT 273
+#define SOMA 274
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -152,7 +156,7 @@ union YYSTYPE
   int     ival;
   float   fval;
 
-#line 156 "y.tab.c" /* yacc.c:355  */
+#line 160 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -169,7 +173,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 173 "y.tab.c" /* yacc.c:358  */
+#line 177 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -411,21 +415,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   18
+#define YYLAST   17
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  18
+#define YYNTOKENS  20
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  11
+#define YYNRULES  12
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  19
+#define YYNSTATES  20
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   272
+#define YYMAXUTOK   274
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -461,15 +465,15 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17
+      15,    16,    17,    18,    19
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    27,    27,    28,    31,    32,    40,    48,    56,    65,
-      74,    81
+       0,    29,    29,    30,    33,    34,    42,    50,    59,    67,
+      76,    85,    92
 };
 #endif
 
@@ -478,9 +482,10 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "THREAD", "PROCESSO", "STRING", "LINHA",
-  "COLUNA", "VAR", "IGUAL", "EOL", "ASPA", "VEZES", "DIVIDIDO", "ABRE",
-  "FECHA", "FLOAT", "SOMA", "$accept", "PROGRAMA", "EXPRESSAO", YY_NULLPTR
+  "$end", "error", "$undefined", "COLUNAS", "LINHAS", "THREAD",
+  "PROCESSO", "STRING", "LINHA", "COLUNA", "VAR", "IGUAL", "EOL", "ASPA",
+  "VEZES", "DIVIDIDO", "ABRE", "FECHA", "FLOAT", "SOMA", "$accept",
+  "PROGRAMA", "EXPRESSAO", YY_NULLPTR
 };
 #endif
 
@@ -490,14 +495,14 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272
+     265,   266,   267,   268,   269,   270,   271,   272,   273,   274
 };
 # endif
 
-#define YYPACT_NINF -12
+#define YYPACT_NINF -14
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-12)))
+  (!!((Yystate) == (-14)))
 
 #define YYTABLE_NINF -1
 
@@ -508,8 +513,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -12,     0,   -12,    -6,    -1,    -2,     6,    -3,   -12,   -11,
-     -12,     1,     2,     3,   -12,   -12,   -12,   -12,   -12
+     -14,     0,   -14,    -8,    -3,    -7,     6,    -2,   -14,   -13,
+     -14,    -4,    -1,     3,   -14,   -14,   -14,   -14,   -14,   -14
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -518,13 +523,13 @@ static const yytype_int8 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        3,     4,     1,     0,     0,     0,     0,     0,     2,     5,
-      11,     0,     0,     0,    10,     7,     8,     6,     9
+      12,     0,     0,     0,    11,     7,     8,     9,     6,    10
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,   -12,   -12
+     -14,   -14,   -14
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -538,36 +543,36 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       2,    11,    12,     6,     7,     3,    15,    16,     8,    17,
-      18,     9,    10,     0,     4,     0,     0,    13,    14
+       2,    11,    12,     6,     7,     8,    15,     3,    16,    17,
+       0,    18,    19,     9,    13,    10,     4,    14
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,    12,    13,     9,     5,     5,     3,     4,    10,     6,
-       7,     5,    15,    -1,    14,    -1,    -1,    16,    16
+       0,    14,    15,    11,     7,    12,     3,     7,     5,     6,
+      -1,     8,     9,     7,    18,    17,    16,    18
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    19,     0,     5,    14,    20,     9,     5,    10,     5,
-      15,    12,    13,    16,    16,     3,     4,     6,     7
+       0,    21,     0,     7,    16,    22,    11,     7,    12,     7,
+      17,    14,    15,    18,    18,     3,     5,     6,     8,     9
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    18,    19,    19,    20,    20,    20,    20,    20,    20,
-      20,    20
+       0,    20,    21,    21,    22,    22,    22,    22,    22,    22,
+      22,    22,    22
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     3,     0,     0,     3,     6,     6,     6,     6,
-       5,     3
+       6,     5,     3
 };
 
 
@@ -1244,83 +1249,94 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 32 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 34 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Copiando %s para %s\n", (yyvsp[0].strval), (yyvsp[-2].strval));
         imagem I = abrir_imagem((yyvsp[0].strval));
         //printf("Li imagem %d por %d\n", I.width, I.height);
         salvar_imagem((yyvsp[-2].strval), &I);
                           }
-#line 1255 "y.tab.c" /* yacc.c:1646  */
+#line 1260 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 40 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 42 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_lin(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
                                        }
-#line 1266 "y.tab.c" /* yacc.c:1646  */
+#line 1271 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 48 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 50 "./src/imageprocessing.y" /* yacc.c:1646  */
+    {
+        printf("Aplicando brilho por colunas*%g\n", (yyvsp[-1].fval));
+        imagem I = abrir_imagem((yyvsp[-3].strval));
+        aplicar_brilho_col(&I,(yyvsp[-1].fval));
+        salvar_imagem((yyvsp[-5].strval),&I);
+                                       }
+#line 1282 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 59 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho multithread *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_thr(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
                                        }
-#line 1277 "y.tab.c" /* yacc.c:1646  */
+#line 1293 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 8:
-#line 56 "./src/imageprocessing.y" /* yacc.c:1646  */
+  case 9:
+#line 67 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
-        printf("Aplicando brilho multithread *%g\n", (yyvsp[-1].fval));
+        printf("Aplicando brilho multiprocessos *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_prc(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
                                        }
-#line 1288 "y.tab.c" /* yacc.c:1646  */
+#line 1304 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 9:
-#line 65 "./src/imageprocessing.y" /* yacc.c:1646  */
+  case 10:
+#line 76 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_col(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
                                        }
-#line 1299 "y.tab.c" /* yacc.c:1646  */
+#line 1315 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 10:
-#line 74 "./src/imageprocessing.y" /* yacc.c:1646  */
+  case 11:
+#line 85 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho /%g\n", (yyvsp[0].fval));
         imagem I = abrir_imagem((yyvsp[-2].strval));
         aplicar_brilho_lin(&I,1/(yyvsp[0].fval));
         salvar_imagem((yyvsp[-4].strval),&I);
                                        }
-#line 1310 "y.tab.c" /* yacc.c:1646  */
+#line 1326 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 11:
-#line 81 "./src/imageprocessing.y" /* yacc.c:1646  */
+  case 12:
+#line 92 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Calcula maximo\n");
         imagem I = abrir_imagem((yyvsp[-1].strval));
         valor_maximo(&I);
                         }
-#line 1320 "y.tab.c" /* yacc.c:1646  */
+#line 1336 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1324 "y.tab.c" /* yacc.c:1646  */
+#line 1340 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1548,7 +1564,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 88 "./src/imageprocessing.y" /* yacc.c:1906  */
+#line 99 "./src/imageprocessing.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s) {

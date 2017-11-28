@@ -45,39 +45,43 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    THREAD = 258,
-    PROCESSO = 259,
-    STRING = 260,
-    LINHA = 261,
-    COLUNA = 262,
-    VAR = 263,
-    IGUAL = 264,
-    EOL = 265,
-    ASPA = 266,
-    VEZES = 267,
-    DIVIDIDO = 268,
-    ABRE = 269,
-    FECHA = 270,
-    FLOAT = 271,
-    SOMA = 272
+    COLUNAS = 258,
+    LINHAS = 259,
+    THREAD = 260,
+    PROCESSO = 261,
+    STRING = 262,
+    LINHA = 263,
+    COLUNA = 264,
+    VAR = 265,
+    IGUAL = 266,
+    EOL = 267,
+    ASPA = 268,
+    VEZES = 269,
+    DIVIDIDO = 270,
+    ABRE = 271,
+    FECHA = 272,
+    FLOAT = 273,
+    SOMA = 274
   };
 #endif
 /* Tokens.  */
-#define THREAD 258
-#define PROCESSO 259
-#define STRING 260
-#define LINHA 261
-#define COLUNA 262
-#define VAR 263
-#define IGUAL 264
-#define EOL 265
-#define ASPA 266
-#define VEZES 267
-#define DIVIDIDO 268
-#define ABRE 269
-#define FECHA 270
-#define FLOAT 271
-#define SOMA 272
+#define COLUNAS 258
+#define LINHAS 259
+#define THREAD 260
+#define PROCESSO 261
+#define STRING 262
+#define LINHA 263
+#define COLUNA 264
+#define VAR 265
+#define IGUAL 266
+#define EOL 267
+#define ASPA 268
+#define VEZES 269
+#define DIVIDIDO 270
+#define ABRE 271
+#define FECHA 272
+#define FLOAT 273
+#define SOMA 274
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -90,7 +94,7 @@ union YYSTYPE
   int     ival;
   float   fval;
 
-#line 94 "y.tab.h" /* yacc.c:1909  */
+#line 98 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

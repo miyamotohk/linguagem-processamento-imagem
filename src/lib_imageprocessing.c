@@ -112,11 +112,7 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   printf("Imagem salva!\n");
 }
 
-<<<<<<< HEAD
-//Aplicacao de brilho por colunas
-=======
 //Aplicacao de brilho varrendo as colunas
->>>>>>> bea6c2046cd625d0d456b30be31e483ae150256d
 void aplicar_brilho_col(imagem *I, float valor) {
 
   clock_t t;
@@ -174,36 +170,6 @@ void aplicar_brilho_lin(imagem *I, float valor) {
   double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
 
   printf("Brilho aplicado! Procedimento por colunas realizado em %f segundos.\n", time_taken);
-}
-
-//Aplicacao de brilho varrendo as linhas
-void aplicar_brilho_lin(imagem *I, float valor) {
-
-  clock_t t;
-  t = clock();
-
-  for (int i=0; i<I->height; i++) {
-     for (int j=0; j<I->width; j++) {
-      int idx;
-
-      idx = j + (i*I->width);
-      
-      I->r[idx] = I->r[idx] * valor;
-      if(I->r[idx] > 255)
-      	I->r[idx] = 255;
-      I->g[idx] = I->g[idx] * valor;
-      if(I->g[idx] > 255)
-      	I->g[idx] = 255;
-      I->b[idx] = I->b[idx] * valor;
-      if(I->b[idx] > 255)
-      	I->b[idx] = 255;
-    }
-  }
-
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
-
-  printf("Brilho aplicado! Procedimento por linhas realizado em %f segundos.\n", time_taken);
 }
 
 //Aplicacao de brilho com multithread
