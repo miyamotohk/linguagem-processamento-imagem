@@ -22,6 +22,16 @@ void yyerror(char *);
     return ASPA;
    }
 
+<<<<<<< HEAD
+(COL|col) {
+    return COLUNAS;
+    }
+
+(LIN|lin) {
+    return LINHAS;
+    }
+
+=======
 (LIN|lin) {
     return LINHA;
     }
@@ -30,6 +40,7 @@ void yyerror(char *);
     return COLUNA;
     }
    
+>>>>>>> bea6c2046cd625d0d456b30be31e483ae150256d
 (THR|thr) {
     return THREAD;
     }

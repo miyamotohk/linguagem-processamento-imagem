@@ -3,23 +3,30 @@
 #include <time.h>
 #include <pthread.h>
 #include <FreeImage.h>
-
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/wait.h>
 #include "imageprocessing.h"
 
 #define n_threads 1000
+#define n_processos 2
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
 int controle = 0;
 
 struct Argumentos{
-	int posicao;
-	float valor;
-	imagem * I;
-        int qtd;
-} ;
+  int posicao;
+  float valor;
+  imagem * I;
+  int qtd;
+};
 
 imagem abrir_imagem(char *nome_do_arquivo) {
   FIBITMAP *bitmapIn;
@@ -42,9 +49,15 @@ imagem abrir_imagem(char *nome_do_arquivo) {
   I.width = x;
   I.height = y;
   
-  I.r = malloc(sizeof(float) * x * y);
-  I.g = malloc(sizeof(float) * x * y);
-  I.b = malloc(sizeof(float) * x * y);
+  // I.r = malloc(sizeof(float) * x * y);
+  // I.g = malloc(sizeof(float) * x * y);
+  // I.b = malloc(sizeof(float) * x * y);
+
+  //Aloca a imagem como memoria compartilhada
+  I.r = (float*) mmap(NULL, sizeof(float)*x*y, PROT_WRITE|PROT_READ, MAP_SHARED | MAP_ANON, 0, 0);
+  I.g = (float*) mmap(NULL, sizeof(float)*x*y, PROT_WRITE|PROT_READ, MAP_SHARED | MAP_ANON, 0, 0);
+  I.b = (float*) mmap(NULL, sizeof(float)*x*y, PROT_WRITE|PROT_READ, MAP_SHARED | MAP_ANON, 0, 0);
+
 
    for (int i=0; i<x; i++) {
      for (int j=0; j<y; j++) {
@@ -55,15 +68,15 @@ imagem abrir_imagem(char *nome_do_arquivo) {
 
       I.r[idx] = color.rgbRed;
       //if(I.r[idx] > valor_max_red){
-      	//(valor_max_red = I.r[idx]);
+        //(valor_max_red = I.r[idx]);
       //}
       I.g[idx] = color.rgbGreen;
       //if(I.g[idx] > valor_max_green){
-      	//(valor_max_green = I.g[idx]);
+        //(valor_max_green = I.g[idx]);
       //}
       I.b[idx] = color.rgbBlue;
       //if(I.b[idx] > valor_max_blue){
-      	//(valor_max_blue = I.b[idx]);
+        //(valor_max_blue = I.b[idx]);
       //}
     }
    }
@@ -99,7 +112,11 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   printf("Imagem salva!\n");
 }
 
+<<<<<<< HEAD
+//Aplicacao de brilho por colunas
+=======
 //Aplicacao de brilho varrendo as colunas
+>>>>>>> bea6c2046cd625d0d456b30be31e483ae150256d
 void aplicar_brilho_col(imagem *I, float valor) {
 
   clock_t t;
@@ -113,13 +130,43 @@ void aplicar_brilho_col(imagem *I, float valor) {
       //printf("R:%f G:%f B:%f\n",I->r[idx],I->g[idx],I->b[idx]);
       I->r[idx] = I->r[idx] * valor;
       if(I->r[idx] > 255)
-      	I->r[idx] = 255;
+        I->r[idx] = 255;
       I->g[idx] = I->g[idx] * valor;
       if(I->g[idx] > 255)
-      	I->g[idx] = 255;
+        I->g[idx] = 255;
       I->b[idx] = I->b[idx] * valor;
       if(I->b[idx] > 255)
-      	I->b[idx] = 255;
+        I->b[idx] = 255;
+    }
+  }
+
+  t = clock() - t;
+  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+
+  printf("Brilho aplicado! Procedimento original realizado em %f segundos.\n", time_taken);
+}
+
+//Aplicacao de brilho por linhas
+void aplicar_brilho_lin(imagem *I, float valor) {
+
+  clock_t t;
+  t = clock();
+
+  for (int i=0; i<I->height; i++) {
+     for (int j=0; j<I->width; j++) {
+      int idx;
+
+      idx = i + (j*I->height);
+      //printf("R:%f G:%f B:%f\n",I->r[idx],I->g[idx],I->b[idx]);
+      I->r[idx] = I->r[idx] * valor;
+      if(I->r[idx] > 255)
+        I->r[idx] = 255;
+      I->g[idx] = I->g[idx] * valor;
+      if(I->g[idx] > 255)
+        I->g[idx] = 255;
+      I->b[idx] = I->b[idx] * valor;
+      if(I->b[idx] > 255)
+        I->b[idx] = 255;
     }
   }
 
@@ -178,9 +225,7 @@ void* mult_thread(void *arg) {
             }
             else{
                 I->r[k] = min(I->r[k] * valor, 255);
-
                 I->g[k] = min(I->g[k] * valor, 255);
-
                 I->b[k] = min(I->b[k] * valor, 255);
             }
         }
@@ -194,12 +239,10 @@ void aplicar_brilho_thr(imagem *I, float valor) {
 
   //Varre a matriz por linhas
   for (int i = 0; i < I->height; i++) {
-  	int N = ((I->width)/n_threads);//Quantidade de vetores de threads necessarios
-  	float Nx = ((float)(I->width)/n_threads);
-        if(N < Nx){
-            N++;
-        }
-  	//Varre os blocos de pixels de tamanho n_threads
+    int N = ((I->width)/n_threads);	//Quantidade de pixels em cada thread
+    float Nx = ((float)(I->width)/n_threads);
+        if(N < Nx)	N++;
+    	//Varre os blocos de pixels de tamanho n_threads
         for(int j = 0; j < N; j++){
             struct Argumentos *thread_args = (struct Argumentos *) malloc(sizeof(struct Argumentos));
             
@@ -227,11 +270,45 @@ void aplicar_brilho_thr(imagem *I, float valor) {
 }
 
 //Aplicacao de brilho com multiprocessos
+void mult_proc(imagem *I, float valor, int linha, int bloco, int N) {
+	pid_t filho;
+	filho = fork();
+
+	if (filho == 0) {
+		//Codigo que executa no processo filho
+		int fim = min(I->width, (bloco+1)*N);
+		int i = linha;
+		int j = bloco*N;
+
+		for (j; j < fim; j++){
+			 int k = i + (j*I->height);
+			 I->r[k] = min(I->r[k] * valor, 255);
+			 I->g[k] = min(I->g[k] * valor, 255);
+			 I->b[k] = min(I->b[k] * valor, 255);
+		}
+
+		exit(EXIT_SUCCESS);
+	}
+	else {
+		//printf("Filho com PID %d\n", filho);
+	}
+}
+
 void aplicar_brilho_prc(imagem *I, float valor) {
   clock_t t;
   t = clock();
 
-  
+  //Varre a imagem por linhas
+  for(int i = 0; i < I->height; i++){
+	int N = ((I->width)/n_processos);	//Quantidade de pixels por processo
+	float Nx = ((float)(I->width)/n_processos);
+	if(N < Nx)	N++;
+	//Varre os blocos de processos
+    for(int j = 0; j < n_processos; j++){
+        mult_proc(I, valor, i, j, N);
+    }
+  }
+  wait(NULL);
 
   t = clock() - t;
   double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds

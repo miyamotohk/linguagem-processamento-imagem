@@ -12,6 +12,8 @@ int yylex(void);
   int     ival;
   float   fval;
 }
+%token <strval> COLUNAS
+%token <strval> LINHAS
 %token <strval> THREAD
 %token <strval> PROCESSO
 %token <strval> STRING
@@ -37,13 +39,27 @@ EXPRESSAO:
                           }
     ;
 
+<<<<<<< HEAD
+    | STRING IGUAL STRING VEZES FLOAT LINHAS{
+        printf("Aplicando brilho por linhas*%g\n", $5);
+=======
     | STRING IGUAL STRING VEZES FLOAT LINHA {
         printf("Aplicando brilho *%g\n", $5);
+>>>>>>> bea6c2046cd625d0d456b30be31e483ae150256d
         imagem I = abrir_imagem($3);
         aplicar_brilho_lin(&I,$5);
         salvar_imagem($1,&I);
                                        }
     ;
+
+    | STRING IGUAL STRING VEZES FLOAT COLUNAS{
+        printf("Aplicando brilho por colunas*%g\n", $5);
+        imagem I = abrir_imagem($3);
+        aplicar_brilho_col(&I,$5);
+        salvar_imagem($1,&I);
+                                       }
+    ;
+
 
     | STRING IGUAL STRING VEZES FLOAT THREAD{
         printf("Aplicando brilho multithread *%g\n", $5);
@@ -54,7 +70,7 @@ EXPRESSAO:
     ;
 
     | STRING IGUAL STRING VEZES FLOAT PROCESSO{
-        printf("Aplicando brilho multithread *%g\n", $5);
+        printf("Aplicando brilho multiprocessos *%g\n", $5);
         imagem I = abrir_imagem($3);
         aplicar_brilho_prc(&I,$5);
         salvar_imagem($1,&I);
@@ -74,7 +90,11 @@ EXPRESSAO:
     | STRING IGUAL STRING DIVIDIDO FLOAT {
         printf("Aplicando brilho /%g\n", $5);
         imagem I = abrir_imagem($3);
+<<<<<<< HEAD
+        aplicar_brilho_col(&I,1/$5);
+=======
         aplicar_brilho_lin(&I,1/$5);
+>>>>>>> bea6c2046cd625d0d456b30be31e483ae150256d
         salvar_imagem($1,&I);
                                        }
     ;
