@@ -89,6 +89,12 @@ imagem abrir_imagem(char *nome_do_arquivo) {
 
 }
 
+void liberar_imagem(imagem *I) {
+	munmap(I->r, sizeof(float));
+	munmap(I->g, sizeof(float));
+	munmap(I->b, sizeof(float));
+}
+
 void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   FIBITMAP *bitmapOut;
   RGBQUAD color;
