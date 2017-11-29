@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/wait.h>
+#include <sys/time.h>
 #include "imageprocessing.h"
 
 #define n_threads 1000
@@ -115,8 +116,9 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
 //Aplicacao de brilho varrendo as colunas
 void aplicar_brilho_col(imagem *I, float valor) {
 
-  clock_t t;
-  t = clock();
+  struct timeval t1, t2;
+  double time_taken;
+  gettimeofday(&t1,NULL);
 
   for (int i=0; i<I->width; i++) {
      for (int j=0; j<I->height; j++) {
@@ -136,17 +138,21 @@ void aplicar_brilho_col(imagem *I, float valor) {
     }
   }
 
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  gettimeofday(&t2,NULL);
 
-  printf("Brilho aplicado! Procedimento original realizado em %f segundos.\n", time_taken);
+  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("Brilho aplicado! Procedimento por colunas realizado em %f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho por linhas
 void aplicar_brilho_lin(imagem *I, float valor) {
 
-  clock_t t;
-  t = clock();
+  struct timeval t1, t2;
+  double time_taken;
+  gettimeofday(&t1,NULL);
+
 
   for (int i=0; i<I->height; i++) {
      for (int j=0; j<I->width; j++) {
@@ -166,10 +172,12 @@ void aplicar_brilho_lin(imagem *I, float valor) {
     }
   }
 
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  gettimeofday(&t2,NULL);
 
-  printf("Brilho aplicado! Procedimento por colunas realizado em %f segundos.\n", time_taken);
+  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("Brilho aplicado! Procedimento por colunas realizado em %f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho com multithread
@@ -200,8 +208,9 @@ void* mult_thread(void *arg) {
 }
 
 void aplicar_brilho_thr(imagem *I, float valor) {
-  clock_t t;
-  t = clock();
+  struct timeval t1, t2;
+  double time_taken;
+  gettimeofday(&t1,NULL);
 
   //Varre a matriz por linhas
   for (int i = 0; i < I->height; i++) {
@@ -229,10 +238,12 @@ void aplicar_brilho_thr(imagem *I, float valor) {
         }
   }
 
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  gettimeofday(&t2,NULL);
 
-  printf("Brilho aplicado! Procedimento com multithreads realizado em %f segundos.\n", time_taken);
+  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("Brilho aplicado! Procedimento com multithreads realizado em %0.4f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho com multiprocessos
@@ -261,8 +272,9 @@ void mult_proc(imagem *I, float valor, int linha, int bloco, int N) {
 }
 
 void aplicar_brilho_prc(imagem *I, float valor) {
-  clock_t t;
-  t = clock();
+  struct timeval t1, t2;
+  double time_taken;
+  gettimeofday(&t1,NULL);
 
   //Varre a imagem por linhas
   for(int i = 0; i < I->height; i++){
@@ -276,10 +288,12 @@ void aplicar_brilho_prc(imagem *I, float valor) {
   }
   wait(NULL);
 
-  t = clock() - t;
-  double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+  gettimeofday(&t2,NULL);
 
-  printf("Brilho aplicado! Procedimento com multiprocessos realizado em %f segundos.\n", time_taken);
+  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("Brilho aplicado! Procedimento com multiprocessos realizado em %0.4f ms.\n", time_taken);
 }
 
 void valor_maximo(imagem *I){
