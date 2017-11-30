@@ -9,8 +9,8 @@
 #include <sys/time.h>
 #include "imageprocessing.h"
 
-#define n_threads 1000
-#define n_processos 2
+#define n_threads 3000
+#define n_processos 5
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
@@ -32,7 +32,6 @@ struct Argumentos{
 imagem abrir_imagem(char *nome_do_arquivo) {
   FIBITMAP *bitmapIn;
   int x, y;
-  //double valor_max_red = 0, valor_max_green = 0, valor_max_blue = 0;
   RGBQUAD color;
   imagem I;
 
@@ -49,11 +48,7 @@ imagem abrir_imagem(char *nome_do_arquivo) {
 
   I.width = x;
   I.height = y;
-  
-  // I.r = malloc(sizeof(float) * x * y);
-  // I.g = malloc(sizeof(float) * x * y);
-  // I.b = malloc(sizeof(float) * x * y);
-
+ 
   //Aloca a imagem como memoria compartilhada
   I.r = (float*) mmap(NULL, sizeof(float)*x*y, PROT_WRITE|PROT_READ, MAP_SHARED | MAP_ANON, 0, 0);
   I.g = (float*) mmap(NULL, sizeof(float)*x*y, PROT_WRITE|PROT_READ, MAP_SHARED | MAP_ANON, 0, 0);
@@ -68,22 +63,10 @@ imagem abrir_imagem(char *nome_do_arquivo) {
       idx = i + (j*x);
 
       I.r[idx] = color.rgbRed;
-      //if(I.r[idx] > valor_max_red){
-        //(valor_max_red = I.r[idx]);
-      //}
       I.g[idx] = color.rgbGreen;
-      //if(I.g[idx] > valor_max_green){
-        //(valor_max_green = I.g[idx]);
-      //}
       I.b[idx] = color.rgbBlue;
-      //if(I.b[idx] > valor_max_blue){
-        //(valor_max_blue = I.b[idx]);
-      //}
     }
    }
-   /*printf("Valor máximo do bit vermelho: %lf.\n", valor_max_red);
-   printf("Valor máximo do bit verde: %lf.\n", valor_max_green);
-   printf("Valor máximo do bit azul: %lf.\n", valor_max_blue);*/
    printf("Arquivo lido!\n");
   return I;
 
@@ -99,7 +82,7 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   FIBITMAP *bitmapOut;
   RGBQUAD color;
 
-  //printf("Salvando imagem %d por %d...\n", I->width, I->height);
+  printf("Salvando imagem %d por %d...\n", I->width, I->height);
   bitmapOut = FreeImage_Allocate(I->width, I->height, 24, 0, 0, 0);
 
    for (int i=0; i<I->width; i++) {
@@ -131,7 +114,7 @@ void aplicar_brilho_col(imagem *I, float valor) {
       int idx;
 
       idx = i + (j*I->width);
-      //printf("R:%f G:%f B:%f\n",I->r[idx],I->g[idx],I->b[idx]);
+
       I->r[idx] = I->r[idx] * valor;
       if(I->r[idx] > 255)
         I->r[idx] = 255;
@@ -165,7 +148,7 @@ void aplicar_brilho_lin(imagem *I, float valor) {
       int idx;
 
       idx = i + (j*I->height);
-      //printf("R:%f G:%f B:%f\n",I->r[idx],I->g[idx],I->b[idx]);
+
       I->r[idx] = I->r[idx] * valor;
       if(I->r[idx] > 255)
         I->r[idx] = 255;
@@ -220,15 +203,14 @@ void aplicar_brilho_thr(imagem *I, float valor) {
 
   //Varre a matriz por linhas
   for (int i = 0; i < I->height; i++) {
-    int N = ((I->width)/n_threads);	//Quantidade de pixels em cada thread
+  	//Quantidade de pixels em cada thread
+    int N = ((I->width)/n_threads);
     float Nx = ((float)(I->width)/n_threads);
         if(N < Nx)	N++;
     	//Varre os blocos de pixels de tamanho n_threads
         for(int j = 0; j < N; j++){
             struct Argumentos *thread_args = (struct Argumentos *) malloc(sizeof(struct Argumentos));
-            
-            //printf("i=%d, j=%d, posicao=%d\n",i,j,i*I->width + (j*n_threads));
-            
+                        
             thread_args->posicao = i*I->width + (j*n_threads);
             thread_args->valor = valor;
             thread_args->I = I;
@@ -284,7 +266,8 @@ void aplicar_brilho_prc(imagem *I, float valor) {
 
   //Varre a imagem por linhas
   for(int i = 0; i < I->height; i++){
-	int N = ((I->width)/n_processos);	//Quantidade de pixels por processo
+  	//Quantidade de pixels por processo
+	int N = ((I->width)/n_processos);
 	float Nx = ((float)(I->width)/n_processos);
 	if(N < Nx)	N++;
 	//Varre os blocos de processos
@@ -311,7 +294,7 @@ void valor_maximo(imagem *I){
       float intensidade;
 
       idx = i + (j*I->width);
-      //printf("R:%f G:%f B:%f\n",I->r[idx],I->g[idx],I->b[idx]);
+
       intensidade = (I->r[idx] + I->g[idx] + I->b[idx])/3.0;
       if(intensidade > maximo)
         maximo = intensidade;

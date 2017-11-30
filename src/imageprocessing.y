@@ -36,6 +36,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         //printf("Li imagem %d por %d\n", I.width, I.height);
         salvar_imagem($1, &I);
+        liberar_imagem(&I);
                           }
     ;
 
@@ -44,6 +45,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_lin(&I,$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     ;
 
@@ -52,6 +54,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_col(&I,$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     ;
 
@@ -61,6 +64,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_thr(&I,$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     ;
 
@@ -69,6 +73,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_prc(&I,$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     ;
     
@@ -78,6 +83,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_col(&I,$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     
     ;
@@ -87,6 +93,7 @@ EXPRESSAO:
         imagem I = abrir_imagem($3);
         aplicar_brilho_lin(&I,1/$5);
         salvar_imagem($1,&I);
+        liberar_imagem(&I);
                                        }
     ;
     | ABRE STRING FECHA {

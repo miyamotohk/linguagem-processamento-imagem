@@ -472,8 +472,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    29,    29,    30,    33,    34,    42,    50,    59,    67,
-      76,    85,    92
+       0,    29,    29,    30,    33,    34,    43,    52,    62,    71,
+      81,    91,    99
 };
 #endif
 
@@ -1255,88 +1255,95 @@ yyreduce:
         imagem I = abrir_imagem((yyvsp[0].strval));
         //printf("Li imagem %d por %d\n", I.width, I.height);
         salvar_imagem((yyvsp[-2].strval), &I);
+        liberar_imagem(&I);
                           }
-#line 1260 "y.tab.c" /* yacc.c:1646  */
+#line 1261 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 42 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 43 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_lin(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1271 "y.tab.c" /* yacc.c:1646  */
+#line 1273 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 50 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 52 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho por colunas*%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_col(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1282 "y.tab.c" /* yacc.c:1646  */
+#line 1285 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 59 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 62 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho multithread *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_thr(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1293 "y.tab.c" /* yacc.c:1646  */
+#line 1297 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 67 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 71 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho multiprocessos *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_prc(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1304 "y.tab.c" /* yacc.c:1646  */
+#line 1309 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 76 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 81 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho *%g\n", (yyvsp[-1].fval));
         imagem I = abrir_imagem((yyvsp[-3].strval));
         aplicar_brilho_col(&I,(yyvsp[-1].fval));
         salvar_imagem((yyvsp[-5].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1315 "y.tab.c" /* yacc.c:1646  */
+#line 1321 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 85 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 91 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Aplicando brilho /%g\n", (yyvsp[0].fval));
         imagem I = abrir_imagem((yyvsp[-2].strval));
         aplicar_brilho_lin(&I,1/(yyvsp[0].fval));
         salvar_imagem((yyvsp[-4].strval),&I);
+        liberar_imagem(&I);
                                        }
-#line 1326 "y.tab.c" /* yacc.c:1646  */
+#line 1333 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 92 "./src/imageprocessing.y" /* yacc.c:1646  */
+#line 99 "./src/imageprocessing.y" /* yacc.c:1646  */
     {
         printf("Calcula maximo\n");
         imagem I = abrir_imagem((yyvsp[-1].strval));
         valor_maximo(&I);
                         }
-#line 1336 "y.tab.c" /* yacc.c:1646  */
+#line 1343 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1340 "y.tab.c" /* yacc.c:1646  */
+#line 1347 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1564,7 +1571,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 99 "./src/imageprocessing.y" /* yacc.c:1906  */
+#line 106 "./src/imageprocessing.y" /* yacc.c:1906  */
 
 
 void yyerror(char *s) {
