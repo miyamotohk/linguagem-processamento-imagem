@@ -57,19 +57,19 @@ EXPRESSAO:
     ;
 
 
-    | STRING IGUAL STRING VEZES FLOAT THREAD{
+    | STRING IGUAL STRING VEZES FLOAT THREAD FLOAT{
         printf("Aplicando brilho multithreads *%g\n", $5);
         imagem I = abrir_imagem($3);
-        aplicar_brilho_thr(&I,$5);
+        aplicar_brilho_thr(&I,$5,(int)$7);
         salvar_imagem($1,&I);
         liberar_imagem(&I);
                                        }
     ;
 
-    | STRING IGUAL STRING VEZES FLOAT PROCESSO{
+    | STRING IGUAL STRING VEZES FLOAT PROCESSO FLOAT{
         printf("Aplicando brilho multiprocessos *%g\n", $5);
         imagem I = abrir_imagem($3);
-        aplicar_brilho_prc(&I,$5);
+        aplicar_brilho_prc(&I,$5,(int)$7);
         salvar_imagem($1,&I);
         liberar_imagem(&I);
                                        }

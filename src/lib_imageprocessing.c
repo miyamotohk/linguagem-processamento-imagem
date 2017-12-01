@@ -9,9 +9,6 @@
 #include <sys/time.h>
 #include "imageprocessing.h"
 
-#define n_threads 3000
-#define n_processos 5
-
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
@@ -21,6 +18,9 @@
 #endif
 
 int controle = 0;
+
+int n_threads;
+int n_processos;
 
 struct Argumentos{
   int posicao;
@@ -105,9 +105,14 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
 //Aplicacao de brilho varrendo as colunas
 void aplicar_brilho_col(imagem *I, float valor) {
 
+  //Real time
   struct timeval t1, t2;
-  double time_taken;
+  double real_time;
   gettimeofday(&t1,NULL);
+
+  //User time
+  clock_t t;
+  t = clock();
 
   for (int i=0; i<I->width; i++) {
      for (int j=0; j<I->height; j++) {
@@ -129,19 +134,26 @@ void aplicar_brilho_col(imagem *I, float valor) {
 
   gettimeofday(&t2,NULL);
 
-  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
-  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+  t = clock() - t;
+  double user_time = 1000*((double)t)/CLOCKS_PER_SEC; //s para ms
 
-  printf("Procedimento por colunas realizado em %f ms.\n", time_taken);
+  real_time = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  real_time += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("User time: %0.4f ms Real time: %0.4f ms\n", user_time, real_time);
 }
 
 //Aplicacao de brilho por linhas
 void aplicar_brilho_lin(imagem *I, float valor) {
 
+  //Real time
   struct timeval t1, t2;
-  double time_taken;
+  double real_time;
   gettimeofday(&t1,NULL);
 
+  //User time
+  clock_t t;
+  t = clock();
 
   for (int i=0; i<I->height; i++) {
      for (int j=0; j<I->width; j++) {
@@ -163,10 +175,13 @@ void aplicar_brilho_lin(imagem *I, float valor) {
 
   gettimeofday(&t2,NULL);
 
-  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
-  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+  t = clock() - t;
+  double user_time = 1000*((double)t)/CLOCKS_PER_SEC; //s para ms
 
-  printf("Procedimento por linhas realizado em %f ms.\n", time_taken);
+  real_time = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  real_time += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("User time: %0.4f ms Real time: %0.4f ms\n", user_time, real_time);
 }
 
 //Aplicacao de brilho com multithread
@@ -196,10 +211,18 @@ void* mult_thread(void *arg) {
   return NULL;
 }
 
-void aplicar_brilho_thr(imagem *I, float valor) {
+void aplicar_brilho_thr(imagem *I, float valor, int n) {
+
+  //Real time
   struct timeval t1, t2;
-  double time_taken;
+  double real_time;
   gettimeofday(&t1,NULL);
+
+  //User time
+  clock_t t;
+  t = clock();
+
+  n_threads = n;
 
   //Varre a matriz por linhas
   for (int i = 0; i < I->height; i++) {
@@ -228,10 +251,13 @@ void aplicar_brilho_thr(imagem *I, float valor) {
 
   gettimeofday(&t2,NULL);
 
-  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
-  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+  t = clock() - t;
+  double user_time = 1000*((double)t)/CLOCKS_PER_SEC; //s para ms
 
-  printf("Procedimento com multithreads realizado em %0.4f ms.\n", time_taken);
+  real_time = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  real_time += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("User time: %0.4f ms Real time: %0.4f ms\n", user_time, real_time);
 }
 
 //Aplicacao de brilho com multiprocessos
@@ -259,10 +285,18 @@ void mult_proc(imagem *I, float valor, int linha, int bloco, int N) {
 	}
 }
 
-void aplicar_brilho_prc(imagem *I, float valor) {
+void aplicar_brilho_prc(imagem *I, float valor, int n) {
+
+  //Real time
   struct timeval t1, t2;
-  double time_taken;
+  double real_time;
   gettimeofday(&t1,NULL);
+
+  n_processos = n;
+
+  //User time
+  clock_t t;
+  t = clock();
 
   //Varre a imagem por linhas
   for(int i = 0; i < I->height; i++){
@@ -279,10 +313,13 @@ void aplicar_brilho_prc(imagem *I, float valor) {
 
   gettimeofday(&t2,NULL);
 
-  time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
-  time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+  t = clock() - t;
+  double user_time = 1000*((double)t)/CLOCKS_PER_SEC; //s para ms
 
-  printf("Procedimento com multiprocessos realizado em %0.4f ms.\n", time_taken);
+  real_time = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
+  real_time += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
+
+  printf("User time: %0.4f ms Real time: %0.4f ms\n", user_time, real_time);
 }
 
 void valor_maximo(imagem *I){
