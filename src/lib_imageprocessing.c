@@ -67,7 +67,7 @@ imagem abrir_imagem(char *nome_do_arquivo) {
       I.b[idx] = color.rgbBlue;
     }
    }
-   printf("Arquivo lido!\n");
+   //printf("Arquivo lido!\n");
   return I;
 
 }
@@ -99,7 +99,7 @@ void salvar_imagem(char *nome_do_arquivo, imagem *I) {
   }
 
   FreeImage_Save(FIF_JPEG, bitmapOut, nome_do_arquivo, JPEG_DEFAULT);
-  printf("Imagem salva!\n");
+  //printf("Imagem salva!\n");
 }
 
 //Aplicacao de brilho varrendo as colunas
@@ -132,7 +132,7 @@ void aplicar_brilho_col(imagem *I, float valor) {
   time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
   time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
 
-  printf("Brilho aplicado! Procedimento por colunas realizado em %f ms.\n", time_taken);
+  printf("Procedimento por colunas realizado em %f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho por linhas
@@ -166,7 +166,7 @@ void aplicar_brilho_lin(imagem *I, float valor) {
   time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
   time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
 
-  printf("Brilho aplicado! Procedimento por colunas realizado em %f ms.\n", time_taken);
+  printf("Procedimento por linhas realizado em %f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho com multithread
@@ -231,7 +231,7 @@ void aplicar_brilho_thr(imagem *I, float valor) {
   time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
   time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
 
-  printf("Brilho aplicado! Procedimento com multithreads realizado em %0.4f ms.\n", time_taken);
+  printf("Procedimento com multithreads realizado em %0.4f ms.\n", time_taken);
 }
 
 //Aplicacao de brilho com multiprocessos
@@ -282,7 +282,7 @@ void aplicar_brilho_prc(imagem *I, float valor) {
   time_taken = (t2.tv_sec - t1.tv_sec)*1000.0; //s para ms
   time_taken += (t2.tv_usec - t1.tv_usec)/1000.0; //us para ms
 
-  printf("Brilho aplicado! Procedimento com multiprocessos realizado em %0.4f ms.\n", time_taken);
+  printf("Procedimento com multiprocessos realizado em %0.4f ms.\n", time_taken);
 }
 
 void valor_maximo(imagem *I){
