@@ -39,7 +39,7 @@
 
 %Um breve texto introdutório explicando do que se trata o documento, em uma linguagem que poderia ser entendida por qualquer pessoa que entenda programação (ou seja: referências diretas à disciplina não são desejáveis).
 
-\textit{Threads}, assim como processos, são mecanismos que permitem que um programa execute ações de forma aparentemente simultânea. A diferença entre eles é que \textit{threads} possuem área de memória compartilhada, o que não ocorre com processos \cite{alp}. Apresentamos uma comparação de desempenho entre diferentes métodos para aplicação de brilho em uma imagem. A mesma funcionalidade foi implementada de quatro maneiras: usando múltiplas \textit{threadas}, usando multiprocessos, em uma única linha de execução, varrendo a matriz por linhas e por colunas. O objetivo é comparar e discutir os desempenhos de cada método a partir do tempo de execução de sistema de cada um deles.
+\textit{Threads}, assim como processos, são mecanismos que permitem que um programa execute ações de forma aparentemente simultânea. A diferença é que \textit{threads} possuem área de memória compartilhada, o que não ocorre com processos \cite{alp}. Apresentamos uma comparação de desempenho entre diferentes métodos para aplicação de brilho em uma imagem: usando múltiplas \textit{threadas}, usando multiprocessos, em uma única linha de execução, varrendo a matriz por linhas e por colunas. O objetivo é comparar e discutir os desempenhos de cada implementação a partir do tempo de execução real e de usuário de cada uma delas.
 
 %A tabela \ref{tabela1} apresenta as sintaxes para os diferentes métodos de aplicação de brilho usados em nosso programa.
 
@@ -61,19 +61,19 @@
 
 %Entradas e saídas que demonstram as funcionalidades implementadas.
 
-Na comparação de desempenho, foram usadas imagens pequena (32x32 pixels), média (720x460) e grande (2592x1944). Foram medidos os tempos reais (tempo de relógio) e os tempos de usuário (tempo que a CPU gasta dentro dos processos).
+Na comparação de desempenho, foram usadas imagens pequena (32x32 pixels), média (720x460) e grande (2592x1944) e foram medidos os tempos reais (tempo de relógio) e de usuário (tempo que a CPU gasta dentro dos processos). O processador usado para os testes tinha as seguintes especificações: \textit{Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz}.
 
 Inicialmente, variou-se a quantidade de \textit{threads} e processos em cada execução para otimizar esse número. Nesse procedimento, a imagem média foi usada como referência. A otimização do tempo de execução se dá para aproximadamente 800 \textit{threads} e 1 processo, dentre os resultados avaliados.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=3.5cm]{Figuras/multithreads}
+	\includegraphics[width=3.65cm]{Figuras/multithreads}
 	\caption{Tempo real (ms) em função do número de \textit{threads}.}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=3.5cm]{Figuras/multiprocessos}
+	\includegraphics[width=3.65cm]{Figuras/multiprocessos}
 	\caption{Tempo real (ms) em função do número de multiprocessos.}
 \end{figure}
 
@@ -107,9 +107,11 @@ A seguir, foram comparados os diferentes métodos de aplicação de brilho para 
 
 %Aqui deve-se comparar a qualidade, em questão de tempo, de cada implementação. Ademais, analisar-se-ão quais métodos são vantajosos de acordo com diferentes tamanhos de imagens e de pixels fixados para análise por função.
 
-Inicialmente, o número de \textit{threads} e processos 
+Observa-se que o método com menor tempo real de execução depende do tamanho da imagem utilizada. Para as imagens pequena e média, a varredura em uma única linha de execução por linhas apresenta melhor desempenho. Já para a imagem grande, este é alcançado pelo método \textit{multithreads}. Uma explicação para essa diferença é a solução de compromisso inerente ao procedimento \textit{multithreads}: existe um gasto computacional para a criação das threads, que só é compensado para imagens muito grandes, para as quais a execução paralela é vantajosa.
 
-Observa-se que o método com menor tempo de execução depende do tamanho da imagem utilizada. Para as imagens pequena e média, as varreduras em uma única linha de execução (por linha e por coluna) são as que apresentam melhor desempenho. No entanto, ao aplicar a funcionalidade à imagem grande, o tempo de execução do método \textit{multithread} mostra-se o menor dentre os comparados. Isso se deve provavelmente à solução de compromisso do método de múltiplas \textit{threads}: há um gasto computacional relacionado à criação delas, que, para imagens pequenas, acaba prejudicando o desempenho; para imagens grandes, no entanto, esse gasto é compensado pelo ganho de tempo da execução paralela das \textit{threads}. No caso da implementação com múltiplos processos, seu desempenho é sempre inferior ao dos demais processos. Uma possível explicação para isso é o gasto necessário para criação da área de memória compartilhada.
+A implementação com múltiplos processos mostrou desempenho inferior às demais implementações. É possível que esse fato esteja relacionado ao gasto computacional necessário para criação da área de memória compartilhada e criação individual de cada processo. Em todos os casos, a varredura por linha apresentou tempo menor que por colunas, fato derivado de como a matriz foi definida. As linhas são posicionadas em sequência, logo, a análise se dá consecutivamente, pixel a pixel, enquanto que em colunas, não há essa sequência na posição de cada pixel.
+
+Nos casos em que o tempo real é menor que o tempo de usuário, a aplicação do brilho é \textit{CPU bounded} (i.e., o maior gargalo de execução está no processador). Por outro lado, no caso contrário, é \textit{I/O bounded} (i.e., o gargalo está na entrada/saída de dados), pois o programa passa tempo esperando os dados.
 
 \begin{thebibliography}{99}
 
